@@ -1,7 +1,5 @@
-import pytest
 import httpx
 import json
-import itertools
 
 from data_pipelines import extract
 
