@@ -1,23 +1,14 @@
 import httpx
-import json
+import pathlib
 
 from data_pipelines import extract
 
-
-class MockLibraryApiResponse:
-    @staticmethod
-    def json():
-        with open("open_library_api_response.json") as f:
-            data = json.load(f)
-
-        return data
-
-
 def test_extract(monkeypatch):
-    def mock_get_json(*args, **kwargs):
-        return MockLibraryApiResponse()
+    def mock_get(*args, **kwargs):
+        text = pathlib.Path("open_library_api_response.json").read_text()
+        return httpx.Response(200, text=text)
 
-    monkeypatch.setattr(httpx, "get", mock_get_json)
+    monkeypatch.setattr(httpx, "get", mock_get)
 
     records = extract()
     first_record = next(records)
