@@ -20,5 +20,6 @@ def test_extract(monkeypatch):
     monkeypatch.setattr(httpx, "get", mock_get_json)
 
     records = extract()
-    first_record = next(iter(records))
+    first_record = next(records)
+
     assert first_record["title"] == "The Lord of the Rings"
